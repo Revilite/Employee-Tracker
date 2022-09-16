@@ -1,6 +1,10 @@
 const inquire = require("inquirer");
 const mysql = require("mysql2");
 const Employee = require("./assets/employee.js");
+const Department = require("./assets/department.js");
+const Role = require("./assets/role.js");
+
+
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -52,6 +56,16 @@ inquire
         if(response.choice == "View All Employees"){
             const view = new Employee();
             view.viewAll();
+        }
+
+
+
+        else if(response.choice == "View All Departments"){
+            const view = new Department();
+            view.viewAll();
+        }
+        else if(response.choice == "Add Department"){
+
         }
 
     })
