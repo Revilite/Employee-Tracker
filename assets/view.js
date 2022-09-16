@@ -9,7 +9,14 @@ const db = mysql.createConnection({
 })
 
 class View{
-    
+    viewDepartment(){
+        db.query("SELECT * FROM department;", (err, results) =>{
+            if (err){
+                console.error(err);
+            }
+            console.log(results);
+    })
+}
 }
 
 module.exports = View;

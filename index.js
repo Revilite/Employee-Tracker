@@ -50,22 +50,22 @@ inquire
         }
     ])
     .then((response) =>{
-        console.clear()
-        console.log(ascii);
+        console.clear();
         if(response.choice == "View All Employees"){
-            const view = new Employee();
-            view.viewAll();
+
+            
         }
         else if(response.choice == "View All Departments"){
-            const view = new Department();
-            view.viewAll();
+            const view = new View;
+            view.viewDepartment();
+            console.log("\n");
         }
         else if(response.choice == "Add Department"){
-            test();
+
             
         }
         
-        
+        init();
     })
 }
 
