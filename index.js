@@ -37,11 +37,10 @@ Employee Tracker
 
 
 
-
-
-const init = () =>{
-console.clear();
 console.log(ascii);
+
+const questions = () =>{
+
 
 inquire
     .prompt([
@@ -53,22 +52,46 @@ inquire
         }
     ])
     .then((response) =>{
-        if(response.choice == "View All Employees"){
-            const view = new Employee();
-            view.viewAll();
-        }
-
-
-
-        else if(response.choice == "View All Departments"){
-            const view = new Department();
-            view.viewAll();
-        }
-        else if(response.choice == "Add Department"){
-
-        }
-
+        answers(response.choice);
     })
 }
 
-init();
+
+const answers = (response) =>{
+    if(response.choice == "View All Employees"){
+        const view = new Employee();
+        view.viewAll();
+    }
+    else if(response.choice == "View All Departments"){
+        const view = new Department();
+        view.viewAll();
+    }
+    else if(response.choice == "Add Department"){
+        const add = new Department();
+        add.add();
+        console.log("It hit")
+        questions();
+    }
+
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+questions();
+

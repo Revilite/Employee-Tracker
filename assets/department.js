@@ -16,6 +16,7 @@ class Department{
             }
             console.log(results);
         })
+
     }
     add(){
         inquire
@@ -27,7 +28,14 @@ class Department{
             }
         ])
         .then((response) =>{
-            
+            const command = `INSERT INTO department (name) VALUES ("${response.name}"); `;
+
+            db.query(command, (err, results) =>{
+                if (err){
+                    console.error(err);
+                }
+                console.log("Successfully created department");
+            })
         })
     }
 }
