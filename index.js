@@ -1,8 +1,6 @@
 const inquire = require("inquirer");
 const mysql = require("mysql2");
-const Employee = require("./assets/employee.js");
-const Department = require("./assets/department.js");
-const Role = require("./assets/role.js");
+const View  = require("./assets/view.js");
 
 
 const db = mysql.createConnection({
@@ -39,7 +37,7 @@ Employee Tracker
 
 console.log(ascii);
 
-const questions = () =>{
+const init = () =>{
 
 
 inquire
@@ -52,29 +50,27 @@ inquire
         }
     ])
     .then((response) =>{
-        answers(response.choice);
+        console.clear()
+        console.log(ascii);
+        if(response.choice == "View All Employees"){
+            const view = new Employee();
+            view.viewAll();
+        }
+        else if(response.choice == "View All Departments"){
+            const view = new Department();
+            view.viewAll();
+        }
+        else if(response.choice == "Add Department"){
+            test();
+            
+        }
+        
+        
     })
 }
 
 
-const answers = (response) =>{
-    if(response.choice == "View All Employees"){
-        const view = new Employee();
-        view.viewAll();
-    }
-    else if(response.choice == "View All Departments"){
-        const view = new Department();
-        view.viewAll();
-    }
-    else if(response.choice == "Add Department"){
-        const add = new Department();
-        add.add();
-        console.log("It hit")
-        questions();
-    }
-
-
-    
+const ask  = () =>{
 }
 
 
@@ -92,6 +88,5 @@ const answers = (response) =>{
 
 
 
-
-questions();
+init();
 
