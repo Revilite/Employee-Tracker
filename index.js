@@ -37,9 +37,12 @@ Employee Tracker
 
 console.log(ascii);
 
+
+
+
+
+
 const init = () =>{
-
-
 inquire
     .prompt([
         {
@@ -50,42 +53,101 @@ inquire
         }
     ])
     .then((response) =>{
-        console.clear();
         if(response.choice == "View All Employees"){
+        
+        }
+        else if(response.choice == "View All Roles"){
+            const view = new View();
+            view.viewRole();
+            setTimeout(init, 10);
+        }
+        else if(response.choice == "Add Role"){
+            const departments = [];
+            db.query("SELECT name FROM department;", (err, results) =>{
+                if (err){
+                    console.error(err);
+                }
+                for(let result of results){
+                    departments.push(result.name);
+                }
+            if(departments != []){
+            inquire
+            .prompt([
+                {  
+                    type:"text",
+                    message: "What is the name of the role?",
+                    name: "name",
+                },
+                {
+                    type: "text",
+                    message : "What is the salary of the role?",
+                    name: "salary",
+                },
+                {
+                    type: "list",
+                    message: "Which department does this role belong to?",
+                    choices: departments,
+                    name: "department",
+                }
+             
+            ])
+            .then((response) =>{
+                for(let i = 0; i < departments.length; i++){
+                    if(departments[i] == response.department){
+                        const command2 =  `INSERT INTO role(title, salary, department_id) VALUES ("${response.name}", ${response.salary}, ${i})`;
 
+                        db.query(command, (err, response) =>{
+                            if(err){
+                                console.error(err);
+                            }
+                            console.log("Role Created");
+                        })
+                        setTimeout(init, 10);
+                    }
+                }
+                
+                
+               
+            })
+        }
+        else{
+            console.log("A deparment is need in order to create a role");
+            setTimeout(init, 10);
             
+        }
+        });
         }
         else if(response.choice == "View All Departments"){
-            const view = new View;
+            const view = new View();
             view.viewDepartment();
-            console.log("\n");
+            setTimeout(init, 10);
         }
         else if(response.choice == "Add Department"){
-
             
+            inquire
+            .prompt([
+                {
+                    message: "What is the name of the new department?",
+                    name: "name",
+                }
+            ])
+            .then((response) =>{
+                const command = `INSERT INTO department(name) VALUES ("${response.name}");`
+        
+                db.query(command, (err, results) =>{
+                    if(err){
+                        console.error(err);
+                    }
+                    console.log("Department Created");
+                })
+                setTimeout(init, 10);
+            });
         }
         
-        init();
     })
+
+    
 }
-
-
-const ask  = () =>{
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 init();

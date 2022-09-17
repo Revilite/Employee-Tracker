@@ -10,13 +10,25 @@ const db = mysql.createConnection({
 
 class View{
     viewDepartment(){
-        db.query("SELECT * FROM department;", (err, results) =>{
+        db.query("SELECT id, name FROM department;", (err, results) =>{
             if (err){
                 console.error(err);
             }
-            console.log(results);
+            console.table(results);
     })
 }
+    viewRole(){
+        const command = `SELECT role.title AS title, department.name AS department, role.salary AS salary FROM role JOIN department ON role.department_id = department.id;`
+
+
+        db.query(command, (err, results) =>{
+            if(err){
+                console.error(err);
+            }
+            console.table(results);
+        })
+    }
 }
+
 
 module.exports = View;
