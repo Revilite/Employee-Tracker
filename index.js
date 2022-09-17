@@ -48,7 +48,7 @@ inquire
         {
             type: "list",
             message: "What would you like to do?",
-            choices: ["View All Employees", "Add Employees", "Update Employees", "View All Roles", "Add Role", "View All Departments", "Add Department"],
+            choices: ["View All Employees", "Add Employees", "Update Employee Roll", "View All Roles", "Add Role", "View All Departments", "Add Department"],
             name: "choice"
         }
     ])
@@ -61,6 +61,8 @@ inquire
 
         else if(response.choice == "Add Employees"){
             const roles = [];
+
+
         }
         else if(response.choice == "View All Roles"){
             const view = new View();
