@@ -54,7 +54,13 @@ inquire
     ])
     .then((response) =>{
         if(response.choice == "View All Employees"){
-        
+        const view = new View();
+        view.viewEmployee();
+        setTimeout(init, 10);
+        }
+
+        else if(response.choice == "Add Employees"){
+            const roles = [];
         }
         else if(response.choice == "View All Roles"){
             const view = new View();
@@ -94,7 +100,7 @@ inquire
             .then((response) =>{
                 for(let i = 0; i < departments.length; i++){
                     if(departments[i] == response.department){
-                        const command2 =  `INSERT INTO role(title, salary, department_id) VALUES ("${response.name}", ${response.salary}, ${i})`;
+                        const command =  `INSERT INTO role(title, salary, department_id) VALUES ("${response.name}", ${response.salary}, ${i + 1})`;
 
                         db.query(command, (err, response) =>{
                             if(err){
