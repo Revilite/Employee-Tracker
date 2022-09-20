@@ -1,7 +1,7 @@
 const inquire = require("inquirer");
 const mysql = require("mysql2");
 const View  = require("./assets/view.js");
-
+require('console.table');
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -31,10 +31,6 @@ ___________________             /\\
 --------------------------------------------
 Employee Tracker
 `;
-
-
-
-
 console.log(ascii);
 
 
@@ -60,8 +56,64 @@ inquire
         }
 
         else if(response.choice == "Add Employees"){
-            const roles = [];
+            db.query('SELECT * FROM role', (err, roles) =>{
+                if (err) throw err;
+                const choices = roles.map(role => role.title)
 
+                db.query("SELECT first_name, last_name FROM employee;", (err, employeeNames) =>{
+                    if (err) throw err;
+                    const names = [];
+                    names.push("None");
+
+                    for(let name of employeeNames){
+                        names.push(name.first_name+" "+ name.last_name);
+                    }
+                    
+                inquire
+                .prompt([
+                    {
+                        type: "text",
+                        message: "What is the employee's first name?",
+                        name: "firstName",
+                    },
+                    {
+                        type: "text",
+                        message: "What is the employee's last name?",
+                        name: "lastName",
+                    },
+                    {
+                        type: "list",
+                        message: "What is the employee's role",
+                        choices,
+                        name: "role",
+                    },
+                    {
+                        type: "list",
+                        message: "Who is the employees manager?",
+                        choices: names,
+                        name: "manager",
+                    }
+
+                ])
+                .then((response) =>{
+                    const managerIds = [];
+                    if (response.manager == "None"){
+                        managerIds.push(response.firstName + " " + response.lastName);
+                    }
+
+
+                    const command = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES('${response.firstName}', '${response.lastName}', ${choices.indexOf(response.role) + 1}, ${names.indexOf(response.manager)})`
+                   
+                    db.query(command, (err, results) =>{
+                        if(err) throw err;
+                        console.log("Employee added");
+                    })
+
+                    setTimeout(init, 10);
+                })
+            })
+            })
+  
 
         }
         else if(response.choice == "View All Roles"){
@@ -70,15 +122,13 @@ inquire
             setTimeout(init, 10);
         }
         else if(response.choice == "Add Role"){
-            const departments = [];
+            const departments = []
             db.query("SELECT name FROM department;", (err, results) =>{
-                if (err){
-                    console.error(err);
-                }
+                if (err) console.error(err);
                 for(let result of results){
                     departments.push(result.name);
-                }
-            if(departments != []){
+            }
+            if(departments[0] !== undefined){
             inquire
             .prompt([
                 {  
@@ -119,7 +169,7 @@ inquire
             })
         }
         else{
-            console.log("A deparment is need in order to create a role");
+            console.log("A deparment is needed in order to create a role");
             setTimeout(init, 10);
             
         }
