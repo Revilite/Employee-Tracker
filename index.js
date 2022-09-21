@@ -100,7 +100,7 @@ inquire
                     if (response.manager == "None"){
                         managerIds.push(response.firstName + " " + response.lastName);
 
-                        const command = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES('${response.firstName}', '${response.lastName}', ${choices.indexOf(response.role) + 1}, 0)`
+                        const command = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES('${response.firstName}', '${response.lastName}', ${choices.indexOf(response.role) + 1}, NULL)`
                    
                         db.query(command, (err, results) =>{
                             if(err) throw err;
