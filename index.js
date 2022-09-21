@@ -99,23 +99,51 @@ inquire
                     const managerIds = [];
                     if (response.manager == "None"){
                         managerIds.push(response.firstName + " " + response.lastName);
-                    }
 
-
-                    const command = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES('${response.firstName}', '${response.lastName}', ${choices.indexOf(response.role) + 1}, ${names.indexOf(response.manager)})`
+                        const command = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES('${response.firstName}', '${response.lastName}', ${choices.indexOf(response.role) + 1}, 0)`
                    
-                    db.query(command, (err, results) =>{
-                        if(err) throw err;
-                        console.log("Employee added");
-                    })
+                        db.query(command, (err, results) =>{
+                            if(err) throw err;
+                            console.log("Employee added");
+                        })
+                    }
+                    else{
+                        const command = `INSERT INTO employee(first_name, last_name, role_id) VALUES ("${response.firstName}", "${response.lastName}", ${choices.indexOf(response.role) + 1})`;
+
+                        db.query(command, (err, results) =>{
+                            if (err) throw err;
+                            console.log("Employee added");
+                        })
+                    }
 
                     setTimeout(init, 10);
                 })
             })
             })
-  
 
         }
+        else if(response.choice == "Update Employee Roll"){
+            db.query('SELECT * FROM role', (err, roles) =>{
+                if (err) throw err;
+                const choices = roles.map(role => role.title)
+            inquire
+            .prompt([
+                {
+                    type: "list",
+                    message: "What is the new role for the employee?",
+                    choices,
+                    name: "role"
+                }
+            ])
+            .then((response) =>{
+                db.query("UPDATE employee SET title = '?' WHERE = customerid", response.role, (err, response) =>{
+                    if (err) throw err;
+                })
+            })
+            
+        })
+        }
+
         else if(response.choice == "View All Roles"){
             const view = new View();
             view.viewRole();
